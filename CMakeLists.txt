@@ -4,3 +4,4 @@ cmake_minimum_required(VERSION 3.10)
 project(SimpleStateMachine)
 
 add_subdirectory(doc)
+add_subdirectory(lib)

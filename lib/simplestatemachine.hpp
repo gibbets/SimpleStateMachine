@@ -3,14 +3,12 @@
 
 namespace ssm {
 
+/*! 
+ *  \brief This class represents a statemachine
+ */
 class statemachine {
     public:
-        bool transitToState();
-        void getState();
-        void addEntryAction();
-        void addExitAction();
-        void deleteEntryAction();
-        void deleteExitAction();
+        statemachine() = default;
 };
 
 }
