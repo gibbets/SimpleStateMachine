@@ -1,3 +1,1 @@
-add_library(simpelstatemachine SHARED
-    simplestatemachine.cpp
-)
+add_library(simpelstatemachine INTERFACE)
