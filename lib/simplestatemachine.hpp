@@ -16,10 +16,17 @@ class statemachine {
         /*!
         * \brief Creates a new state machine
         */
-        statemachine(std::vector<std::pair<T, T>> transitions) : 
-        m_transitions{transitions}
+        statemachine(std::vector<std::pair<T, T>> transitions, T initialState) : 
+        m_transitions{transitions}, m_initialState(initialState)
         {
 
+        }
+
+        /*!
+        * \brief Returns the current state
+        */
+        T getCurrentState(void) {
+            return m_initialState;
         }
 
         /*!
@@ -31,6 +38,8 @@ class statemachine {
 
     private:
         std::vector<std::pair<T, T>> m_transitions;
+        T m_initialState;
+
         std::map<T, std::function<void()>> m_enterActions;
 };
 

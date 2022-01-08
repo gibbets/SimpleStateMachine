@@ -15,7 +15,9 @@ TEST(ssm_test, object_exists) {
     std::vector<std::pair<states, states>> myTransitions; 
     myTransitions.push_back(transition);
 
-    ssm::statemachine<states> myStatemachine(myTransitions);
+    ssm::statemachine<states> myStatemachine(myTransitions, states::start);
+
+    ASSERT_EQ(myStatemachine.getCurrentState(), states::start);
 }
 
 int main(int argc, char **argv) {

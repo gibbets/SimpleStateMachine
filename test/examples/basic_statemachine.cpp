@@ -12,7 +12,7 @@ int main() {
     std::vector<std::pair<states, states>> myTransitions; 
     myTransitions.push_back(transition);
 
-    ssm::statemachine<states> myStatemachine(myTransitions);
+    ssm::statemachine<states> myStatemachine(myTransitions, states::start);
 
     return 0;
 }
