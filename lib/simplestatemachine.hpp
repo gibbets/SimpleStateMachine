@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include <algorithm>
 
 namespace ssm {
 
@@ -12,12 +13,14 @@ namespace ssm {
  */
 template <class T>
 class statemachine {
+    static_assert(std::is_enum<T>::value, "Parameter must be an Enum");
+
     public:
         /*!
         * \brief Creates a new state machine
         */
-        statemachine(std::vector<std::pair<T, T>> transitions, T initialState) : 
-        m_transitions{transitions}, m_initialState(initialState)
+        statemachine(std::vector<std::pair<T, T>> const &transitions, T const initialState) : 
+        m_transitions{transitions}, m_currentState(initialState)
         {
 
         }
@@ -25,22 +28,42 @@ class statemachine {
         /*!
         * \brief Returns the current state
         */
-        T getCurrentState(void) {
-            return m_initialState;
+        T getCurrentState(void) const {
+            return m_currentState;
         }
 
         /*!
         * \brief Sets a method which will be called when a specific states is being entered
         */
-        void setEnterAction(T state, std::function<void()> action) {
+        void setEnterAction(T const state, std::function<void()> action) {
             m_enterActions.insert(std::make_pair(state, action));
+        }
+
+        /*!
+        * \brief Performs the transition to the new state. Returns true if it was succesfull
+        */
+        bool performTransitionTo(T const newState) {
+            bool ret{false};
+
+            if(std::find(m_transitions.begin(), m_transitions.end(),std::make_pair(m_currentState, newState)) != m_transitions.end()) {
+                auto action = m_enterActions.find(newState);
+                if(action != m_enterActions.end()) {
+                    action->second();
+                }
+
+                m_currentState = newState;
+                ret = true;
+            }
+
+            return ret;
         }
 
     private:
         std::vector<std::pair<T, T>> m_transitions;
-        T m_initialState;
+        T m_currentState;
 
         std::map<T, std::function<void()>> m_enterActions;
+        std::map<T, std::function<void()>> m_exitActions;
 };
 
 }
