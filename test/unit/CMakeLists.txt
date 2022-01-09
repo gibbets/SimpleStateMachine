@@ -1,9 +1,9 @@
 include_directories(${CMAKE_HOME_DIRECTORY}/lib)
 
-add_executable(ssm_gtest
-    main.cpp
-)
+enable_testing()
+find_package(GTest REQUIRED)
+include(GoogleTest)
 
-target_link_libraries(ssm_gtest
-    GTest::GTest
-)
+add_executable(tests main.cpp)
+target_link_libraries(tests GTest::GTest GTest::Main)
+gtest_discover_tests(tests)

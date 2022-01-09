@@ -19,9 +19,3 @@ TEST(ssm_test, object_exists) {
 
     ASSERT_EQ(myStatemachine.getCurrentState(), states::start);
 }
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);    
-
-    return RUN_ALL_TESTS();
-}
