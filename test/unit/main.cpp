@@ -28,18 +28,25 @@ TEST(ssm_test, perform_tranisition) {
 
     ssm::statemachine<states> myStatemachine(myTransitions, states::start);
 
-    int callCounter{0};
-    myStatemachine.setEnterAction(states::running, [&callCounter]() {
-        callCounter++;
+    int callCounterEnterActions{0};
+    myStatemachine.setEnterAction(states::running, [&callCounterEnterActions]() {
+        callCounterEnterActions++;
+    });
+
+    int callCounterExitActions{0};
+    myStatemachine.setExitAction(states::start, [&callCounterExitActions]() {
+        callCounterExitActions++;
     });
 
     ASSERT_EQ(myStatemachine.getCurrentState(), states::start);
 
     ASSERT_TRUE(myStatemachine.performTransitionTo(states::running));
     ASSERT_EQ(myStatemachine.getCurrentState(), states::running);
-    ASSERT_EQ(callCounter, 1);
+    ASSERT_EQ(callCounterEnterActions, 1);
+    ASSERT_EQ(callCounterExitActions, 1);
 
     ASSERT_FALSE(myStatemachine.performTransitionTo(states::start));
     ASSERT_EQ(myStatemachine.getCurrentState(), states::running);
-    ASSERT_EQ(callCounter, 1);
+    ASSERT_EQ(callCounterEnterActions, 1);
+    ASSERT_EQ(callCounterExitActions, 1);
 }
