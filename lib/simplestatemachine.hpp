@@ -1,10 +1,10 @@
 #ifndef SIMPLESTATEMACHINE_HPP
 #define SIMPLESTATEMACHINE_HPP
 
-#include <vector>
-#include <map>
-#include <functional>
 #include <algorithm>
+#include <functional>
+#include <map>
+#include <vector>
 
 namespace ssm {
 
@@ -19,8 +19,8 @@ class statemachine {
         /*!
         * \brief Creates a new state machine
         */
-        statemachine(std::vector<std::pair<T, T>> const &transitions, T const initialState) : 
-        m_transitions{transitions}, m_currentState(initialState)
+        statemachine(std::vector<std::pair<T, T>> const transitions, T const initialState) : 
+        m_transitions{std::move(transitions)}, m_currentState(initialState)
         {
 
         }
@@ -28,7 +28,7 @@ class statemachine {
         /*!
         * \brief Returns the current state
         */
-        T getCurrentState(void) const {
+        T getCurrentState() const {
             return m_currentState;
         }
 
@@ -79,6 +79,6 @@ class statemachine {
         std::map<T, std::function<void()>> m_exitActions;
 };
 
-}
+} // namespace ssm
 
 #endif
