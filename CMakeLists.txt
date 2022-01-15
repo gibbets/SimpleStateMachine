@@ -9,6 +9,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(GTest REQUIRED)
 
+include(clang-format.cmake)
+
 add_subdirectory(doc)
 add_subdirectory(lib)
 add_subdirectory(test)
