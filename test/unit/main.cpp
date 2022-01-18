@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "callbacksMock.hpp"
 #include "simplestatemachine.hpp"
 
 enum states { start, running, end };
@@ -25,24 +26,21 @@ TEST(ssm_test, perform_tranisition) {
 
   ssm::statemachine<states> myStatemachine(myTransitions, states::start);
 
-  int callCounterEnterActions{0};
-  myStatemachine.setEnterAction(states::running, [&callCounterEnterActions]() {
-    callCounterEnterActions++;
-  });
+  ssm::callbacksMock callbacks;
 
-  int callCounterExitActions{0};
+  myStatemachine.setEnterAction(states::running, [&callbacks] () { callbacks.enterAction();});
+
   myStatemachine.setExitAction(
-      states::start, [&callCounterExitActions]() { callCounterExitActions++; });
+      states::start, [&callbacks]() { callbacks.exitAction(); });
 
   ASSERT_EQ(myStatemachine.getCurrentState(), states::start);
 
+  EXPECT_CALL(callbacks, exitAction);
+  EXPECT_CALL(callbacks, enterAction);
   ASSERT_TRUE(myStatemachine.performTransitionTo(states::running));
   ASSERT_EQ(myStatemachine.getCurrentState(), states::running);
-  ASSERT_EQ(callCounterEnterActions, 1);
-  ASSERT_EQ(callCounterExitActions, 1);
+
 
   ASSERT_FALSE(myStatemachine.performTransitionTo(states::start));
   ASSERT_EQ(myStatemachine.getCurrentState(), states::running);
-  ASSERT_EQ(callCounterEnterActions, 1);
-  ASSERT_EQ(callCounterExitActions, 1);
 }
