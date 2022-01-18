@@ -33,13 +33,15 @@ TEST(ssm_test, perform_tranisition) {
   myStatemachine.setExitAction(
       states::start, [&callbacks]() { callbacks.exitAction(); });
 
+  myStatemachine.setTransitionAction(transition, [&callbacks]() { callbacks.transitionAction(); });
+
   ASSERT_EQ(myStatemachine.getCurrentState(), states::start);
 
   EXPECT_CALL(callbacks, exitAction);
   EXPECT_CALL(callbacks, enterAction);
+  EXPECT_CALL(callbacks, transitionAction);
   ASSERT_TRUE(myStatemachine.performTransitionTo(states::running));
   ASSERT_EQ(myStatemachine.getCurrentState(), states::running);
-
 
   ASSERT_FALSE(myStatemachine.performTransitionTo(states::start));
   ASSERT_EQ(myStatemachine.getCurrentState(), states::running);

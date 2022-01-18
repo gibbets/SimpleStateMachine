@@ -11,12 +11,16 @@ class callbacksMock{
  *  \brief Mock method to be called for the exit action callback
  */
   MOCK_METHOD(void, exitAction, ());
-
-   public:
+  
 /*!
  *  \brief Mock method to be called for the enter action callback
  */
   MOCK_METHOD(void, enterAction, ());
+
+  /*!
+ *  \brief Mock method to be called for the transition from one state to another
+ */
+  MOCK_METHOD(void, transitionAction, ());
 };
 
 }

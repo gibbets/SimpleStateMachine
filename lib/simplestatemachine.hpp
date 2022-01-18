@@ -45,6 +45,13 @@ class statemachine {
   }
 
   /*!
+   * \brief Sets a method which will be called when a transition from one state to another state is performed
+   */
+  void setTransitionAction(std::pair<T, T> transition, std::function<void()> action) {
+    m_transitionActions.insert(std::make_pair(transition, action));
+  }
+
+  /*!
    * \brief Performs the transition to the new state. Returns true if it was
    * succesfull
    */
@@ -64,6 +71,11 @@ class statemachine {
         exitAction->second();
       }
 
+      auto transitionAction = m_transitionActions.find(std::make_pair(m_currentState, newState));
+      if (transitionAction != m_transitionActions.end()) {
+        transitionAction->second();
+      }
+
       m_currentState = newState;
       ret = true;
     }
@@ -77,6 +89,7 @@ class statemachine {
 
   std::map<T, std::function<void()>> m_enterActions;
   std::map<T, std::function<void()>> m_exitActions;
+  std::map<std::pair<T, T>, std::function<void()>> m_transitionActions;
 };
 
 }  // namespace ssm
