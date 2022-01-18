@@ -27,6 +27,9 @@ jobs:
     - name: Install gtest
       run: sudo apt-get install libgtest-dev
       
+    - name: Install gmock
+      run: sudo apt-get install libgmock-dev
+      
     - name: Install clang-tidy
       run: sudo apt-get install clang-tidy
 
